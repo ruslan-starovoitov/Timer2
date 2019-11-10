@@ -18,7 +18,7 @@ private:
     WatchArrow *arrows;
 
     int notchesCount;
-    QColor notchesColor;
+    QColor *notchesColor;
 };
 
 #endif // WATCHDIAL_H

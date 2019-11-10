@@ -16,7 +16,7 @@ private:
     //Полигон
     int pointCount;
     QPoint *polygon;
-    QColor color;
+    QColor *color;
 };
 
 #endif // WATCHARROW_H

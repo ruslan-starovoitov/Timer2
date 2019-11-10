@@ -1,6 +1,7 @@
 #ifndef ANALOGCLOCKWINDOW_H
 #define ANALOGCLOCKWINDOW_H
 #include "rasterwindow.h"
+#include "watchdial.h"
 #include <QtGui>
 
 enum TimerStates { Reseted, Paused, Started };
@@ -23,6 +24,9 @@ private:
     TimerStates timerState;
     //Пересоздаёт таймер
     int myStartTimer();
+
+    int watchDialsCount;
+    WatchDial * watchDials;
 };
 
 #endif // ANALOGCLOCKWINDOW_H

@@ -4,6 +4,9 @@ const int fps = 30.0;
 
 AnalogClockWindow::AnalogClockWindow()
 {
+    WatchDial *watchDial = new WatchDial();
+
+
     setTitle("Analog Clock");
     resize(200, 200);
 
@@ -56,6 +59,11 @@ void AnalogClockWindow::render(QPainter *p)
     //Для масштабирования
     int side = qMin(width(), height());
     p->scale(side / 200.0, side / 200.0);
+
+
+    for(int i = 0; i < watchDialsCount; i++){
+        WatchDial tmp = watchDials[i];
+    }
 
     //Отрисовка насечек для часов
     QColor blueColor(3, 15, 252);
