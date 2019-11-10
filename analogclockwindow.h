@@ -20,6 +20,7 @@ private:
     int m_timerId;
     float angle;
     TimerStates timerState;
+    int myStartTimer();
 };
 
 #endif // ANALOGCLOCKWINDOW_H

@@ -1,6 +1,6 @@
 #include "analogclockwindow.h"
 
-const float fps = 30.0;
+const int fps = 30.0;
 
 AnalogClockWindow::AnalogClockWindow()
 {
@@ -8,10 +8,13 @@ AnalogClockWindow::AnalogClockWindow()
     resize(200, 200);
 
     angle = 0;
-    m_timerId = startTimer(1000.0 / fps);
+    m_timerId = myStartTimer();
     timerState = Started;
 }
 
+int AnalogClockWindow::myStartTimer(){
+    return startTimer(1000 / fps);
+}
 void AnalogClockWindow::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == m_timerId)
@@ -27,7 +30,7 @@ void AnalogClockWindow::mousePressEvent(QMouseEvent *event)
     switch (timerState) {
         case Reseted:
             timerState = Started;
-            m_timerId = startTimer(1000 / fps);
+            m_timerId = myStartTimer();
             break;
         case Started:
             timerState = Paused;
@@ -48,8 +51,8 @@ void AnalogClockWindow::render(QPainter *p)
     static const QPoint minuteHand[4] = {
         QPoint(-1, 0),
         QPoint(1, 0),
-        QPoint(0.5, -95),
-        QPoint(-0.5, -95)
+        QPoint(0, -95),
+        QPoint(0, -95)
     };
 
     QColor hourColor(127, 0, 127);
