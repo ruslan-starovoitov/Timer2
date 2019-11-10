@@ -10,6 +10,7 @@ public:
     WatchArrow();
     void draw(QPainter *p, int time);
 
+    WatchArrow(int turnOverPeriod, QColor color, int pointCount, QPoint *polygon);
 private:
     //Период оборота
     int turnOverPeriod;

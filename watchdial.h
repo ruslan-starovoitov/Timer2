@@ -1,5 +1,6 @@
 #ifndef WATCHDIAL_H
 #define WATCHDIAL_H
+#include "notches.h"
 #include "watcharrow.h"
 
 //Циферблат
@@ -17,8 +18,8 @@ private:
     int arrowsCount;
     WatchArrow *arrows;
 
-    int notchesCount;
-    QColor *notchesColor;
+    int notchesTypesCount;
+    Notches * notches;
 };
 
 #endif // WATCHDIAL_H

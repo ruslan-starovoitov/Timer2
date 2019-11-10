@@ -1,4 +1,5 @@
 #include "analogclockwindow.h"
+#include <ctime>
 
 const int fps = 30.0;
 
@@ -32,21 +33,21 @@ void AnalogClockWindow::timerEvent(QTimerEvent *event)
 
 void AnalogClockWindow::mousePressEvent(QMouseEvent *event)
 {
-    switch (timerState) {
-        case Reseted:
-            timerState = Started;
-            m_timerId = myStartTimer();
-            break;
-        case Started:
-            timerState = Paused;
-            killTimer(m_timerId);
-            break;
-        case Paused:
-            timerState = Reseted;
-            angle = 0;
-            renderLater();
-            break;
-    }
+//    switch (timerState) {
+//        case Reseted:
+//            timerState = Started;
+//            m_timerId = myStartTimer();
+//            break;
+//        case Started:
+//            timerState = Paused;
+//            killTimer(m_timerId);
+//            break;
+//        case Paused:
+//            timerState = Reseted;
+//            angle = 0;
+//            renderLater();
+//            break;
+//    }
 }
 
 
@@ -62,46 +63,16 @@ void AnalogClockWindow::render(QPainter *p)
     int side = qMin(width(), height());
     p->scale(side / 200.0, side / 200.0);
 
+
+    time_t seconds;
+    seconds = time (NULL);
+
     //Отрисовка циферблатов
     for(int i = 0; i < watchDialsCount; i++){
-        watchDials[i].draw(p, 2<<30);
+        watchDials[i].draw(p, seconds);
     }
+    p->end();
 
-    //Отрисовка насечек для часов
-    QColor blueColor(3, 15, 252);
-    p->setPen(Qt::NoPen);
-    p->setBrush(blueColor);
-    p->setPen(blueColor);
-    for (int i = 0; i < 12; ++i) {
-        p->drawLine(70, 0, 96, 0);
-        p->rotate(30.0);
-    }
 
-    //Отрисовка стрелки
-
-    //Полигон стрелки
-    static const QPoint minuteHand[3] = {
-        QPoint(-1, 0),
-        QPoint(1, 0),
-        QPoint(0, -95)
-    };
-
-    QColor orangeColor(252,61,3);
-    p->setPen(Qt::NoPen);    
-    p->setBrush(orangeColor);
-
-    p->save();
-    p->rotate(angle);
-    p->drawConvexPolygon(minuteHand, 3);
-    p->restore();
-
-    //Отрисовка насечек для минут
-    QColor redColor(252,3,15);
-    p->setPen(redColor);
-    for (int j = 0; j < 60; ++j) {
-        if ((j % 5) != 0)
-            p->drawLine(80, 0, 96, 0);
-        p->rotate(6.0);
-    }
 }
 
