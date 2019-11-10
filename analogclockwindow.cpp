@@ -47,43 +47,46 @@ void AnalogClockWindow::mousePressEvent(QMouseEvent *event)
 
 void AnalogClockWindow::render(QPainter *p)
 {
-
-    static const QPoint minuteHand[4] = {
-        QPoint(-1, 0),
-        QPoint(1, 0),
-        QPoint(0, -95),
-        QPoint(0, -95)
-    };
-
-    QColor hourColor(127, 0, 127);
-    QColor minuteColor(0, 127, 127, 191);
-
+    //Сглаживание
     p->setRenderHint(QPainter::Antialiasing);
 
+    //Полигон стрелки
+    static const QPoint minuteHand[3] = {
+        QPoint(-1, 0),
+        QPoint(1, 0),
+        QPoint(0, -95)
+    };    
 
+    //Перенос системы координат для циферблата
     p->translate(width() / 2, height() / 2);
 
+    //Для масштабирования
     int side = qMin(width(), height());
     p->scale(side / 200.0, side / 200.0);
 
+    //Отрисовка насечек для часов
+    QColor blueColor(3, 15, 252);
     p->setPen(Qt::NoPen);
-    p->setBrush(hourColor);
-    p->setPen(hourColor);
-
+    p->setBrush(blueColor);
+    p->setPen(blueColor);
     for (int i = 0; i < 12; ++i) {
         p->drawLine(70, 0, 96, 0);
         p->rotate(30.0);
     }
-    p->setPen(Qt::NoPen);
-    p->setBrush(minuteColor);
+
+    //Отрисовка стрелки
+    QColor orangeColor(252,61,3);
+    p->setPen(Qt::NoPen);    
+    p->setBrush(orangeColor);
 
     p->save();
     p->rotate(angle);
-    p->drawConvexPolygon(minuteHand, 4);
+    p->drawConvexPolygon(minuteHand, 3);
     p->restore();
 
-    p->setPen(minuteColor);
-
+    //Отрисовка насечек для минут
+    QColor redColor(252,3,15);
+    p->setPen(redColor);
     for (int j = 0; j < 60; ++j) {
         if ((j % 5) != 0)
             p->drawLine(80, 0, 96, 0);

@@ -13,6 +13,7 @@ public:
 
 protected:
     void timerEvent(QTimerEvent *) override;
+    //Отрисовка всей сцены
     void render(QPainter *p) override;
     void mousePressEvent(QMouseEvent *event) override;
 
@@ -20,6 +21,7 @@ private:
     int m_timerId;
     float angle;
     TimerStates timerState;
+    //Пересоздаёт таймер
     int myStartTimer();
 };
 
