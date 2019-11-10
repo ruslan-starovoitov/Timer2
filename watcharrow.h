@@ -8,11 +8,12 @@ class WatchArrow
 {
 public:
     WatchArrow();
-    void draw(QPainter *p, float angle);
-    double getSpeed();
+    void draw(QPainter *p, int time);
 
 private:
-    double speed;
+    //Период оборота
+    int turnOverPeriod;
+    //Полигон
     int pointCount;
     QPoint *polygon;
     QColor color;
