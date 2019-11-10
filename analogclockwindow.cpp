@@ -5,7 +5,9 @@ const int fps = 30.0;
 AnalogClockWindow::AnalogClockWindow()
 {
     WatchDial *watchDial = new WatchDial();
-
+    watchDials = new WatchDial[1];
+    watchDialsCount=0;
+    watchDials[watchDialsCount++] = *watchDial;
 
     setTitle("Analog Clock");
     resize(200, 200);
@@ -60,9 +62,9 @@ void AnalogClockWindow::render(QPainter *p)
     int side = qMin(width(), height());
     p->scale(side / 200.0, side / 200.0);
 
-
+    //Отрисовка циферблатов
     for(int i = 0; i < watchDialsCount; i++){
-        WatchDial tmp = watchDials[i];
+        watchDials[i].draw(p, 2<<30);
     }
 
     //Отрисовка насечек для часов

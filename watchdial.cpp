@@ -16,6 +16,16 @@ WatchDial::WatchDial()
 
 void WatchDial::draw(QPainter *p, long time)
 {
+    //Отрисовка насечек
+    for(int i = 0; i < notchesCount; i++)
+    {
+        //Отрисовать вид насечек
+    }
 
+    //Отрисовка стрелок
+    for(int i = 0; i < arrowsCount; i++)
+    {
+        //Отрисовать стрелку
+    }
 }
 
