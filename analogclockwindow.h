@@ -19,7 +19,7 @@ protected:
 
 private:
     int m_timerId;
-    float angle;
+    double angle;
     TimerStates timerState;
     //Пересоздаёт таймер
     int myStartTimer();

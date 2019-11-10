@@ -50,13 +50,6 @@ void AnalogClockWindow::render(QPainter *p)
     //Сглаживание
     p->setRenderHint(QPainter::Antialiasing);
 
-    //Полигон стрелки
-    static const QPoint minuteHand[3] = {
-        QPoint(-1, 0),
-        QPoint(1, 0),
-        QPoint(0, -95)
-    };    
-
     //Перенос системы координат для циферблата
     p->translate(width() / 2, height() / 2);
 
@@ -75,6 +68,14 @@ void AnalogClockWindow::render(QPainter *p)
     }
 
     //Отрисовка стрелки
+
+    //Полигон стрелки
+    static const QPoint minuteHand[3] = {
+        QPoint(-1, 0),
+        QPoint(1, 0),
+        QPoint(0, -95)
+    };
+
     QColor orangeColor(252,61,3);
     p->setPen(Qt::NoPen);    
     p->setBrush(orangeColor);
