@@ -13,6 +13,11 @@ WatchArrow::WatchArrow()
     _polygon[1] = QPoint(1, 0);
     _polygon[2] = QPoint(0, -95);
 
+    //Внешняя стрелка
+//    _polygon[0] = QPoint(-5, -100);
+//    _polygon[1] = QPoint(5, -100);
+//    _polygon[2] = QPoint(0, -90);
+
     printInfo();
 }
 
@@ -72,7 +77,7 @@ void WatchArrow::printInfo()
     }
 }
 
-void WatchArrow::draw(QPainter *p, int time)
+void WatchArrow::draw(QPainter *p, long long time)
 {
     QTextStream cout(stdout);
 
@@ -86,7 +91,14 @@ void WatchArrow::draw(QPainter *p, int time)
         cout<<"Exception: "<<ex<<endl;
     }
 
-    double angle = 6*(time%_turnOverPeriod)/(_turnOverPeriod/60);
+    double sec = time/1000000000.0;
+    //от 0 до 1
+    double percents = sec/_turnOverPeriod;
+    double angle = 360*percents;
+
+//    cout<<"sec = "<<sec<<endl;
+//    cout<<"percents = "<<percents<<endl;
+//    cout<<"angle = "<<angle<<endl;
 
     p->setPen(Qt::NoPen);
     p->setBrush(*_color);

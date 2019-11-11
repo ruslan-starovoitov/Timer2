@@ -22,7 +22,8 @@ private:
     int _y1;
     int _x2;
     int _y2;
-//    Notch * specialNotches;
+    Notch * specialNotches;
+    int specialNotchesCount;
 };
 
 #endif // NOTCHES_H

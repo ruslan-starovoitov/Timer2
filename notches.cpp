@@ -13,6 +13,7 @@ Notches::Notches()
     _y2 = 0;
 
     showInfo();
+    specialNotchesCount=0;
 }
 
 Notches::~Notches()
@@ -31,6 +32,7 @@ Notches::Notches(int count, QColor * color, int x1, int y1, int x2, int y2)
     _y2 = y2;
 
     showInfo();
+    specialNotchesCount=0;
 }
 
 void Notches::showInfo()
@@ -61,6 +63,9 @@ void Notches::draw(QPainter *p)
     //Перевод в изначальное (вертикальное положение)
     p->rotate(0);
     //Рисование отдельных насечек
-//    for(int i = 0; i < )
+    for(int i = 0; i < specialNotchesCount; i++)
+    {
+        specialNotches->draw(p);
+    }
 
 }

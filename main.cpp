@@ -8,6 +8,8 @@ int main(int argc, char **argv)
 
     AnalogClockWindow clock;
     clock.show();
+
+
     return app.exec();
 
 }

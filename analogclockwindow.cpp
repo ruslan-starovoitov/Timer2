@@ -1,10 +1,14 @@
 #include "analogclockwindow.h"
 #include <ctime>
+#include <QWidget>
 
 const int fps = 30.0;
+const auto begin = std::chrono::high_resolution_clock::now();
 
 AnalogClockWindow::AnalogClockWindow()
 {
+
+
 
     watchDialsCount=2;
     watchDials = new WatchDial[watchDialsCount]{
@@ -24,6 +28,7 @@ AnalogClockWindow::AnalogClockWindow()
 
     setTitle("Analog Clock");
     resize(200, 200);
+
 
     angle = 0;
     m_timerId = myStartTimer();
@@ -78,10 +83,12 @@ void AnalogClockWindow::render(QPainter *p)
 
     time_t seconds;
     seconds = time (NULL);
+    auto now = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-begin).count();
 
     //Отрисовка циферблатов
     for(int i = 0; i < watchDialsCount; i++){
-        watchDials[i].draw(p, seconds, width(), height());
+        watchDials[i].draw(p, duration, width(), height());
     }
     p->end();
 

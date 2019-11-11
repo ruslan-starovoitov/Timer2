@@ -9,6 +9,7 @@ enum TimerStates { Reseted, Paused, Started };
 ///Описывает единственное окно 
 class AnalogClockWindow : public RasterWindow
 {
+//    Q_OBJECT
 public:
     AnalogClockWindow();
 
@@ -17,6 +18,9 @@ protected:
     //Отрисовка всей сцены
     void render(QPainter *p) override;
     void mousePressEvent(QMouseEvent *event) override;
+
+private slots:
+ void handleButton();
 
 private:
     int m_timerId;
@@ -27,6 +31,7 @@ private:
 
     int watchDialsCount;
     WatchDial * watchDials;
+    QPushButton *m_button;
 };
 
 #endif // ANALOGCLOCKWINDOW_H

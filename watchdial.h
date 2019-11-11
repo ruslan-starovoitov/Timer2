@@ -12,7 +12,7 @@ public:
     WatchDial(int centerXCoordinateInPercent, int centerYCoordinateInPercent, int arrowsCount, WatchArrow *arrows, int notchesCount, Notches *notches);
     WatchDial(int centerXCoordinateInPercent, int centerYCoordinateInPercent);
     ~WatchDial();
-    void draw(QPainter *p, long time, int windowWidth, int windowHeight);
+    void draw(QPainter *p, long long time, int windowWidth, int windowHeight);
 private:
     int _centerXCoordinateInPercent;
     int _centerYCoordinateInPercent;

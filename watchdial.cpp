@@ -5,10 +5,10 @@ WatchDial::WatchDial()
     _centerXCoordinateInPercent = 50;
     _centerYCoordinateInPercent = 50;
 
-    _arrowsCount = 1;
+    _arrowsCount = 2;
     _arrows =  new WatchArrow [_arrowsCount]{
             WatchArrow()
-//                    ,            WatchArrow(3600, new QColor(120, 120,0), 4, new QPoint[4]{QPoint(1,0),QPoint(-1,0),QPoint(-1,-50),QPoint(1,-50)})
+                    ,            WatchArrow(3600, new QColor(120, 120,0), 4, new QPoint[4]{QPoint(1,0),QPoint(-1,0),QPoint(-1,-50),QPoint(1,-50)})
         };
 
 
@@ -75,7 +75,7 @@ WatchDial::~WatchDial()
     cout<<"WatchDial object deleted."<<endl;
 }
 
-void WatchDial::draw(QPainter *p, long time, int windowWidth,int windowHeight)
+void WatchDial::draw(QPainter *p, long long time, int windowWidth,int windowHeight)
 {
     QTextStream cout(stdout);
 

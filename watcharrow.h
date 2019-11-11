@@ -8,7 +8,7 @@ class WatchArrow
 {
 public:
     WatchArrow();
-    void draw(QPainter *p, int time);
+    void draw(QPainter *p, long long time);
 
     WatchArrow(int _turnOverPeriod, QColor * _color, int _pointCount, QPoint *_polygon);
     WatchArrow(int _turnOverPeriod);
