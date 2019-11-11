@@ -5,10 +5,10 @@ const int fps = 30.0;
 
 AnalogClockWindow::AnalogClockWindow()
 {
-    WatchDial *watchDial = new WatchDial();
+
     watchDials = new WatchDial[1];
-    watchDialsCount=0;
-    watchDials[watchDialsCount++] = *watchDial;
+    watchDialsCount=1;
+
 
     setTitle("Analog Clock");
     resize(200, 200);

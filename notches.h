@@ -9,15 +9,17 @@ class Notches
 {
 public:
     Notches();
+    ~Notches();
     void draw(QPainter *p);
-    Notches(int count, QColor color, int x1, int y1, int x2, int y2);
+    void showInfo();
+    Notches(int count, QColor *color, int x1, int y1, int x2, int y2);
 private:
     QColor *notchesColor;
-    int notchesCount;
-    int x1;
-    int y1;
-    int x2;
-    int y2;
+    unsigned long long notchesCount;
+    int _x1;
+    int _y1;
+    int _x2;
+    int _y2;
 };
 
 #endif // NOTCHES_H

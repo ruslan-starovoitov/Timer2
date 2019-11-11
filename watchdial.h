@@ -9,16 +9,17 @@ class WatchDial
 {
 public:
     WatchDial();
+    ~WatchDial();
     void draw(QPainter *p, long time);
 
 private:
     int centerXCoordinateInPercent;
     int centerYCoordinateInPercent;
 
-    int arrowsCount;
+    unsigned long long arrowsCount;
     WatchArrow *arrows;
 
-    int notchesTypesCount;
+    unsigned long long notchesTypesCount;
     Notches * notches;
 };
 

@@ -1,49 +1,105 @@
 #include "watcharrow.h"
 #include <QTextStream>
 using namespace std;
+#include <sstream>
 
 WatchArrow::WatchArrow()
 {
-    turnOverPeriod= 60;
-    color = new QColor(17,255,0);
-    pointCount = 3;
-    polygon = new QPoint[3];
-    polygon[0] = QPoint(-1, 0);
-    polygon[1] = QPoint(1, 0);
-    polygon[2] = QPoint(0, -95);
+    _turnOverPeriod= 60;
+    _color = new QColor(17,255,0);
+    _pointCount = 3;
+    _polygon = new QPoint[3];
+    _polygon[0] = QPoint(-1, 0);
+    _polygon[1] = QPoint(1, 0);
+    _polygon[2] = QPoint(0, -95);
+
+    printInfo();
 }
 
 
 
-WatchArrow::WatchArrow(int turnOverPeriod, QColor color, int pointCount, QPoint *polygon)
+WatchArrow::WatchArrow(int turnOverPeriod)
 {
-    this->turnOverPeriod= turnOverPeriod;
-    this->color = &color;
-    this->pointCount = pointCount;
-    this->polygon = polygon;
+    _turnOverPeriod= turnOverPeriod;
+    _color = new QColor(17,255,0);
+    _pointCount = 3;
+    _polygon = new QPoint[3];
+    _polygon[0] = QPoint(-1, 0);
+    _polygon[1] = QPoint(1, 0);
+    _polygon[2] = QPoint(0, -95);
+
+    printInfo();
 }
 
+
+
+WatchArrow::WatchArrow(int turnOverPeriod, QColor * color, int pointCount, QPoint *polygon)
+{
+    _turnOverPeriod= turnOverPeriod;
+    _color = color;
+    _pointCount = pointCount;
+    _polygon = polygon;
+
+
+
+    if(_pointCount<3 || _polygon==nullptr||_polygon->isNull()){
+        std::stringstream ss;
+        ss << "unable to create arrow object. Point count = " + std::to_string( _pointCount  ) << std::endl;
+        throw std::runtime_error(ss.str());
+    }
+
+
+    if(_turnOverPeriod<1){
+        std::stringstream ss;
+        ss << "unable to create arrow object. turnOverPeriod = " + std::to_string( _turnOverPeriod  ) << std::endl;
+        throw std::runtime_error(ss.str());
+    }
+
+    printInfo();
+
+
+}
+
+void WatchArrow::printInfo()
+{
+    QTextStream cout(stdout);
+    cout<<"Arrow object created."<<endl;
+    cout<<"Point count = "<<_pointCount<<endl;
+    cout<<"Turnover period = "<<_turnOverPeriod<<endl;
+    for(int i =0; i < _pointCount; i++)
+    {
+        cout<<  "Point \t\tx= "<<_polygon[i].x()<<"\t\t y= "<<_polygon[i].y()<<endl;
+    }
+}
 
 void WatchArrow::draw(QPainter *p, int time)
 {
     QTextStream cout(stdout);
 
     try {
-        if(pointCount==0 || polygon==nullptr||polygon->isNull()){
-            throw "polygon is empty";
+        if(_pointCount==0 || _polygon==nullptr||_polygon->isNull()){
+            std::stringstream ss;
+            ss << "polygon is empty. Point count = " + std::to_string( _pointCount  ) << std::endl;
+            throw std::runtime_error(ss.str());
         }
     } catch (const char * ex) {
         cout<<"Exception: "<<ex<<endl;
     }
 
-    double angle = 6*(time%turnOverPeriod)/(turnOverPeriod/60);
+    double angle = 6*(time%_turnOverPeriod)/(_turnOverPeriod/60);
 
     p->setPen(Qt::NoPen);
-    p->setBrush(*color);
+    p->setBrush(*_color);
     p->save();
     p->rotate(angle);
-    p->drawConvexPolygon(polygon, pointCount);
+    p->drawConvexPolygon(_polygon, _pointCount);
     p->restore();
+}
+
+WatchArrow::~WatchArrow()
+{
+    QTextStream cout(stdout);
+    cout<<"WatchArrow object deleted."<<endl;
 }
 
 
