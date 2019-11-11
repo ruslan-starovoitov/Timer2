@@ -79,6 +79,7 @@ void WatchDial::draw(QPainter *p, long time, int windowWidth,int windowHeight)
 {
     QTextStream cout(stdout);
 
+    //Для возможности отката после переноса центра координат
     p->save();
 
     //Перенос системы координат для циферблата
@@ -101,7 +102,7 @@ void WatchDial::draw(QPainter *p, long time, int windowWidth,int windowHeight)
         _arrows[i].draw(p, time);
     }
 
-
+    //Откат к старому центру координат
     p->restore();
 }
 

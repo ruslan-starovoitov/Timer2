@@ -24,7 +24,6 @@ Notches::~Notches()
 Notches::Notches(int count, QColor * color, int x1, int y1, int x2, int y2)
 {
     notchesCount = count;
-//    notchesColor = &color;
     notchesColor=color;
     _x1 = x1;
     _y1 = y1;
@@ -51,10 +50,17 @@ void Notches::draw(QPainter *p)
     p->setBrush(*notchesColor);
     p->setPen(*notchesColor);
 
+    //Рисование насечек от 0 до 360 градусов подряд
     for(int i = 0; i < notchesCount; i++)
     {
         p->drawLine(_x1, _y1, _x2, _y2);
+        //Доворот на дельту
         p->rotate(360/notchesCount);
     }
+
+    //Перевод в изначальное (вертикальное положение)
+    p->rotate(0);
+    //Рисование отдельных насечек
+//    for(int i = 0; i < )
 
 }

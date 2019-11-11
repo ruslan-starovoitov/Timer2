@@ -1,6 +1,8 @@
 #ifndef NOTCHES_H
 #define NOTCHES_H
 
+#include "notch.h"
+
 #include <QPainter>
 
 
@@ -20,6 +22,7 @@ private:
     int _y1;
     int _x2;
     int _y2;
+//    Notch * specialNotches;
 };
 
 #endif // NOTCHES_H
