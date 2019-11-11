@@ -2,6 +2,7 @@ SOURCES += \
     main.cpp \
     notch.cpp \
     notches.cpp \
+    rasterbutton.cpp \
     rasterwindow.cpp \
     analogclockwindow.cpp \
     watchdial.cpp \
@@ -10,6 +11,7 @@ SOURCES += \
 HEADERS += \
     notch.h \
     notches.h \
+    rasterbutton.h \
     rasterwindow.h \
     analogclockwindow.h \
     analogclockwindow.h \

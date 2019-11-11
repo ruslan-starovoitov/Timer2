@@ -3,7 +3,7 @@
 #include <QWidget>
 
 const int fps = 30.0;
-const auto begin = std::chrono::high_resolution_clock::now();
+const auto begin1 = std::chrono::high_resolution_clock::now();
 
 AnalogClockWindow::AnalogClockWindow()
 {
@@ -33,6 +33,10 @@ AnalogClockWindow::AnalogClockWindow()
     angle = 0;
     m_timerId = myStartTimer();
     timerState = Started;
+
+
+
+    m_rbutton = new RasterButton (new QColor(0,0,0), "Zrada", 0, 0, 25, 50);
 }
 
 
@@ -68,6 +72,11 @@ void AnalogClockWindow::mousePressEvent(QMouseEvent *event)
 //    }
 }
 
+void AnalogClockWindow::mouseMoveEvent(QMouseEvent *event)
+{
+
+}
+
 
 void AnalogClockWindow::render(QPainter *p)
 {
@@ -84,12 +93,15 @@ void AnalogClockWindow::render(QPainter *p)
     time_t seconds;
     seconds = time (NULL);
     auto now = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-begin).count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-begin1).count();
 
     //Отрисовка циферблатов
     for(int i = 0; i < watchDialsCount; i++){
         watchDials[i].draw(p, duration, width(), height());
     }
+
+    m_rbutton->draw(p);
+
     p->end();
 
 

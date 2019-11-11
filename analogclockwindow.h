@@ -1,5 +1,6 @@
 #ifndef ANALOGCLOCKWINDOW_H
 #define ANALOGCLOCKWINDOW_H
+#include "rasterbutton.h"
 #include "rasterwindow.h"
 #include "watchdial.h"
 #include <QtGui>
@@ -18,6 +19,7 @@ protected:
     //Отрисовка всей сцены
     void render(QPainter *p) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 private slots:
  void handleButton();
@@ -32,6 +34,7 @@ private:
     int watchDialsCount;
     WatchDial * watchDials;
     QPushButton *m_button;
+    RasterButton *m_rbutton;
 };
 
 #endif // ANALOGCLOCKWINDOW_H
