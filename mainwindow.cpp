@@ -10,15 +10,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QWindow *view = new AnalogClockWindow();
+    view = new AnalogClockWindow();
     QWidget *container = QWidget::createWindowContainer(view);
     container->setParent(ui->centralwidget);
-    container->setMaximumSize(ui->centralwidget->size());
-}
+    QSize size(500,500);
+    container->setMaximumSize(size);
 
+}
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+void MainWindow::on_startStopButton_clicked()
+{
+    view->startStop();
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+    view->reset();
+}

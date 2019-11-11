@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>694</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,26 +14,51 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <property name="minimumSize">
+    <size>
+     <width>700</width>
+     <height>500</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>700</width>
+     <height>500</height>
+    </size>
+   </property>
+   <widget class="QPushButton" name="startStopButton">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>80</y>
+      <x>580</x>
+      <y>40</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Start</string>
     </property>
    </widget>
-   <widget class="QWidget" name="widget" native="true">
+   <widget class="QPushButton" name="resetButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>160</y>
-      <width>421</width>
-      <height>291</height>
+      <x>580</x>
+      <y>90</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset</string>
+    </property>
+   </widget>
+   <widget class="QDial" name="dial">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>220</y>
+      <width>50</width>
+      <height>64</height>
      </rect>
     </property>
    </widget>
@@ -43,7 +68,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>694</width>
      <height>21</height>
     </rect>
    </property>

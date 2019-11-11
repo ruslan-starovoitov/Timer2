@@ -12,19 +12,18 @@ class AnalogClockWindow : public RasterWindow
 //    Q_OBJECT
 public:
     AnalogClockWindow();
+    void startStop();
+    void reset();
 
 protected:
     void timerEvent(QTimerEvent *) override;
     //Отрисовка всей сцены
     void render(QPainter *p) override;
-    void mousePressEvent(QMouseEvent *event) override;
-
-private slots:
- void handleButton();
 
 private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> begin;
+    std::chrono::time_point<std::chrono::high_resolution_clock> pauseTime;
     int m_timerId;
-    double angle;
     TimerStates timerState;
     //Пересоздаёт таймер
     int myStartTimer();

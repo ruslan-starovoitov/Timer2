@@ -3,13 +3,9 @@
 #include <QWidget>
 
 const int fps = 30.0;
-const auto begin = std::chrono::high_resolution_clock::now();
 
 AnalogClockWindow::AnalogClockWindow()
 {
-
-
-
     watchDialsCount=2;
     watchDials = new WatchDial[watchDialsCount]{
                 WatchDial(),
@@ -22,17 +18,11 @@ AnalogClockWindow::AnalogClockWindow()
                 } )
     };
 
-
-
-
-
     setTitle("Analog Clock");
     resize(200, 200);
 
-
-    angle = 0;
-    m_timerId = myStartTimer();
-    timerState = Started;
+    timerState = Paused;
+    reset();
 }
 
 
@@ -43,29 +33,41 @@ void AnalogClockWindow::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == m_timerId)
     {
-        angle += 6.0 / fps;
-        if(angle >= 360.0) angle -= 360.0;
         renderLater();
     }
 }
 
-void AnalogClockWindow::mousePressEvent(QMouseEvent *event)
+void AnalogClockWindow::startStop()
 {
-//    switch (timerState) {
-//        case Reseted:
-//            timerState = Started;
-//            m_timerId = myStartTimer();
-//            break;
-//        case Started:
-//            timerState = Paused;
-//            killTimer(m_timerId);
-//            break;
-//        case Paused:
-//            timerState = Reseted;
-//            angle = 0;
-//            renderLater();
-//            break;
-//    }
+    switch (timerState) {
+        case Reseted:
+            timerState = Started;
+            m_timerId = myStartTimer();
+            begin = std::chrono::high_resolution_clock::now();
+            pauseTime = begin;
+            break;
+        case Started:
+            timerState = Paused;
+            killTimer(m_timerId);
+            pauseTime = std::chrono::high_resolution_clock::now();
+            break;
+        case Paused:
+            timerState = Started;
+            m_timerId = myStartTimer();
+            begin += pauseTime - begin;
+            renderLater();
+            break;
+    }
+}
+
+void AnalogClockWindow::reset()
+{
+    if(timerState == Paused){
+        timerState = Reseted;
+        begin = std::chrono::high_resolution_clock::now();
+        pauseTime = begin;
+        renderLater();
+    }
 }
 
 
