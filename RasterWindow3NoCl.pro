@@ -1,5 +1,6 @@
 SOURCES += \
     main.cpp \
+    mainwindow.cpp \
     notch.cpp \
     notches.cpp \
     rasterwindow.cpp \
@@ -8,6 +9,7 @@ SOURCES += \
     watcharrow.cpp
 
 HEADERS += \
+    mainwindow.h \
     notch.h \
     notches.h \
     rasterwindow.h \
@@ -17,3 +19,6 @@ HEADERS += \
     watcharrow.h
 
 QT += widgets
+
+FORMS += \
+    mainwindow.ui
