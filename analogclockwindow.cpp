@@ -6,16 +6,27 @@ const int fps = 100.0;
 
 AnalogClockWindow::AnalogClockWindow()
 {
-    watchDialsCount=2;
+    watchDialsCount=3;
+    int _arrsCount = 1360;
+    WatchArrow *arrows = new WatchArrow[_arrsCount];
+    for(int i = 0; i < _arrsCount; i++){
+        arrows[i] = WatchArrow(i, new QColor(i * 10 % 255,255,i * i % 256), 3, new QPoint[3]{QPoint(-1, 0),QPoint(1, 0),QPoint(0,-30)});
+    }
+
     watchDials = new WatchDial[watchDialsCount]{
                 WatchDial(),
                 WatchDial(50, 30, 2,
                           new WatchArrow[2]{
-                                        WatchArrow(1, new QColor(0,0,0), 4, new QPoint[4]{QPoint(-1,0),QPoint(1,0),QPoint(1,-20),QPoint(-1,-20)}),
-                                        WatchArrow(60, new QColor(0,255,0), 3, new QPoint[3]{QPoint(-3,-30),QPoint(3,-30),QPoint(0,-25)})
+                                        WatchArrow(1, new QColor(0,0,0), 3, new QPoint[3]{QPoint(-1,0),QPoint(1,0),QPoint(0,-20)}),
+                                        WatchArrow(60, new QColor(0,255,0), 3, new QPoint[3]{QPoint(-3,-30),QPoint(3,-30),QPoint(0,-20)})
                           },
                 1, new Notches[1]{
                     Notches (12, new QColor(0,0,0), 20,0,25,0)
+                } ),
+                WatchDial(50, 70, _arrsCount,
+                          arrows,
+                1, new Notches[1]{
+                    Notches (60, new QColor(90,110,50), 20,0,25,0)
                 } )
     };
 
