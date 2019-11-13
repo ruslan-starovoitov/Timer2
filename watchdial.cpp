@@ -8,7 +8,7 @@ WatchDial::WatchDial()
     _arrowsCount = 2;
     _arrows =  new WatchArrow [_arrowsCount]{
             WatchArrow()
-                    ,            WatchArrow(3600, new QColor(120, 120,0), 4, new QPoint[4]{QPoint(1,0),QPoint(-1,0),QPoint(-1,-50),QPoint(1,-50)})
+                    ,            WatchArrow(-10, new QColor(120, 120,0), 3, new QPoint[3]{QPoint(-5,-100),QPoint(5,-100),QPoint(0,-92)})
         };
 
 

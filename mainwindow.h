@@ -22,6 +22,8 @@ private slots:
 
     void on_resetButton_clicked();
 
+    void DrawDigitalTime(long long time);
+
 private:
     Ui::MainWindow *ui;
     AnalogClockWindow *view;

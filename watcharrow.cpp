@@ -54,11 +54,11 @@ WatchArrow::WatchArrow(int turnOverPeriod, QColor * color, int pointCount, QPoin
     }
 
 
-    if(_turnOverPeriod<1){
-        std::stringstream ss;
-        ss << "unable to create arrow object. turnOverPeriod = " + std::to_string( _turnOverPeriod  ) << std::endl;
-        throw std::runtime_error(ss.str());
-    }
+//    if(_turnOverPeriod<1){
+//        std::stringstream ss;
+//        ss << "unable to create arrow object. turnOverPeriod = " + std::to_string( _turnOverPeriod  ) << std::endl;
+//        throw std::runtime_error(ss.str());
+//    }
 
     printInfo();
 

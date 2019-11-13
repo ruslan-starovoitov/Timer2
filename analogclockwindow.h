@@ -9,7 +9,7 @@ enum TimerStates { Reseted, Paused, Started };
 ///Описывает единственное окно 
 class AnalogClockWindow : public RasterWindow
 {
-//    Q_OBJECT
+    Q_OBJECT
 public:
     AnalogClockWindow();
     void startStop();
@@ -31,6 +31,9 @@ private:
     int watchDialsCount;
     WatchDial * watchDials;
     QPushButton *m_button;
+
+signals:
+    void timeChanged(long long time);
 };
 
 #endif // ANALOGCLOCKWINDOW_H

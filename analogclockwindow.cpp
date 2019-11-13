@@ -2,16 +2,17 @@
 #include <ctime>
 #include <QWidget>
 
-const int fps = 30.0;
+const int fps = 100.0;
 
 AnalogClockWindow::AnalogClockWindow()
 {
     watchDialsCount=2;
     watchDials = new WatchDial[watchDialsCount]{
                 WatchDial(),
-                WatchDial(50, 30, 1,
-                          new WatchArrow[1]{
-                                        WatchArrow(3600, new QColor(0,0,0), 4, new QPoint[4]{QPoint(-1,0),QPoint(1,0),QPoint(1,-20),QPoint(-1,-20),})
+                WatchDial(50, 30, 2,
+                          new WatchArrow[2]{
+                                        WatchArrow(1, new QColor(0,0,0), 4, new QPoint[4]{QPoint(-1,0),QPoint(1,0),QPoint(1,-20),QPoint(-1,-20)}),
+                                        WatchArrow(60, new QColor(0,255,0), 3, new QPoint[3]{QPoint(-3,-30),QPoint(3,-30),QPoint(0,-25)})
                           },
                 1, new Notches[1]{
                     Notches (12, new QColor(0,0,0), 20,0,25,0)
@@ -54,7 +55,8 @@ void AnalogClockWindow::startStop()
         case Paused:
             timerState = Started;
             m_timerId = myStartTimer();
-            begin += pauseTime - begin;
+            auto now = std::chrono::high_resolution_clock::now();
+            begin += now-pauseTime;
             renderLater();
             break;
     }
@@ -76,24 +78,25 @@ void AnalogClockWindow::render(QPainter *p)
     //Сглаживание
     p->setRenderHint(QPainter::Antialiasing);
 
-    //Перенос системы координат для циферблата
-    //p->translate(width() / 2, height() / 2);
-
-    //Для масштабирования
-//    int side = qMin(width(), height());
-//    p->scale(side / 200.0, side / 200.0);
-
-    time_t seconds;
-    seconds = time (NULL);
+    //Вычисление времени
     auto now = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-begin).count();
 
+    switch (timerState) {
+        case Reseted:
+            duration = 0;
+            break;
+        case Paused:
+            duration = std::chrono::duration_cast<std::chrono::nanoseconds>(pauseTime-begin).count();
+            break;
+    }
+
+    //
+    emit timeChanged(duration);
     //Отрисовка циферблатов
     for(int i = 0; i < watchDialsCount; i++){
         watchDials[i].draw(p, duration, width(), height());
     }
     p->end();
-
-
 }
 
