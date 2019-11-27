@@ -47,6 +47,13 @@ void AnalogClockWindow::render(QPainter *p)
     p->setBrush(Qt::black);
     p->drawRect(-100, -100, 200, 200);
 
+    p->save();
+    p->setPen(QPen(QColor(0, 255, 0, 150), 1));
+    p->setBrush(Qt::NoBrush);
+    p->drawEllipse(-100, -100, 200, 200);
+    p->drawEllipse(-50, -50, 100, 100);
+    p->restore();
+
     //Вычисление времени
     auto now = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-startTime).count();
@@ -62,6 +69,7 @@ void AnalogClockWindow::render(QPainter *p)
 
     QConicalGradient conicalGrad(0, 0, 0);
     conicalGrad.setColorAt(0, Qt::green);
+    conicalGrad.setColorAt(0.005, QColor(0, 255, 0, 100));
     conicalGrad.setColorAt(0.125, Qt::transparent);
     p->setBrush(QBrush(conicalGrad));
     p->drawPie(-100, -100, 200, 200, 0, 1000);
@@ -74,7 +82,7 @@ void AnalogClockWindow::render(QPainter *p)
     if(planeInfo != nullptr)
     {
         auto deltaT = planeInfo->timeMs - duration / 1000000;
-        const int maxDelta = 100;
+        const int maxDelta = 10;
         if(abs(deltaT) < maxDelta)
         {
             int transparency = 0;
@@ -84,8 +92,8 @@ void AnalogClockWindow::render(QPainter *p)
             qInfo() << color;
             p->setPen(QPen(color, 3));
             p->setBrush(color);
-            qreal x = planeInfo->radius / 150000 * sin(angle / 180 * M_PI) * 100;
-            qreal y = planeInfo->radius / 150000 * cos(angle / 180 * M_PI) * 100;
+            qreal x = planeInfo->radius / 150000 * sin((angle) / 180 * M_PI) * 100;
+            qreal y = planeInfo->radius / 150000 * cos((angle) / 180 * M_PI) * 100;
             qInfo()<< "X: " << x << " Y: " << y;
             p->drawPoint(QPointF(x, y));
             qInfo() << "Before MoveNext";
