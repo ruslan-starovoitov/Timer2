@@ -11,7 +11,7 @@
 class ReaderIterator
 {
 public:
-    ReaderIterator();
+    ReaderIterator(const std::string path = "data.txt");
     ~ReaderIterator();
     void MoveNext();
     bool HasValue();

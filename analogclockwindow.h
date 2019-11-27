@@ -12,7 +12,7 @@ class AnalogClockWindow : public RasterWindow
 {
     Q_OBJECT
 public:
-    AnalogClockWindow();
+    AnalogClockWindow(const std::string filepath = "data.txt");
 
 protected:
     void timerEvent(QTimerEvent *) override;

@@ -5,12 +5,11 @@
 
 const int fps = 100.0;
 
-AnalogClockWindow::AnalogClockWindow()
+AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepath)
 {
     setTitle("Radar");
-    resize(200, 200);
+    resize(500, 500);
 
-    reader = ReaderIterator();
     startTime = std::chrono::high_resolution_clock::now();
 
     m_timerId = myStartTimer();
@@ -72,17 +71,27 @@ void AnalogClockWindow::render(QPainter *p)
 
     auto planeInfo = reader.GetCurrent();
 
-    auto deltaT = planeInfo->timeMs - duration / 1000000;
-    if(abs(deltaT) < 10)
+    if(planeInfo != nullptr)
     {
-        int transparency = 0;
-        if(deltaT > 0) transparency = deltaT * 255 / 1000;
-        auto color = QColor(0, 255, 0, transparency);
-        p->setPen(QPen(color, 3));
-        qreal x = planeInfo->radius / 150000 * sin(angle / 180 * M_PI) * 100;
-        qreal y = planeInfo->radius / 150000 * cos(angle / 180 * M_PI) * 100;
-        p->drawPoint(QPointF(x, y));
-        reader.MoveNext();
+        auto deltaT = planeInfo->timeMs - duration / 1000000;
+        const int maxDelta = 100;
+        if(abs(deltaT) < maxDelta)
+        {
+            int transparency = 0;
+            if(deltaT > 0) transparency = deltaT * 255 / maxDelta;
+            qInfo() << transparency;
+            auto color = QColor(0, 255, 0, transparency);
+            qInfo() << color;
+            p->setPen(QPen(color, 3));
+            p->setBrush(color);
+            qreal x = planeInfo->radius / 150000 * sin(angle / 180 * M_PI) * 100;
+            qreal y = planeInfo->radius / 150000 * cos(angle / 180 * M_PI) * 100;
+            qInfo()<< "X: " << x << " Y: " << y;
+            p->drawPoint(QPointF(x, y));
+            qInfo() << "Before MoveNext";
+            reader.MoveNext();
+            qInfo() << "After MoveNext";
+        }
     }
 
     p->end();
