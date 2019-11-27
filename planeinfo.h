@@ -6,6 +6,11 @@ class PlaneInfo
 {
 public:
     PlaneInfo();
+    long long timeMs;
+    double radius;
+    int height;
+    int velocity;
+    int index;
 };
 
 #endif // PLANEINFO_H

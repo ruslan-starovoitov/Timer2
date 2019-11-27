@@ -2,7 +2,7 @@
 #define RASTERWINDOW_H
 
 #include <QtGui>
-#include <QPushButton>
+
 
 class RasterWindow : public QWindow
 {

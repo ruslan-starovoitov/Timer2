@@ -1,22 +1,18 @@
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    notch.cpp \
-    notches.cpp \
+    planeinfo.cpp \
     rasterwindow.cpp \
     analogclockwindow.cpp \
-    watchdial.cpp \
-    watcharrow.cpp
+    readeriterator.cpp
 
 HEADERS += \
     mainwindow.h \
-    notch.h \
-    notches.h \
+    planeinfo.h \
     rasterwindow.h \
     analogclockwindow.h \
     analogclockwindow.h \
-    watchdial.h \
-    watcharrow.h
+    readeriterator.h
 
 QT += widgets
 

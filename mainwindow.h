@@ -17,13 +17,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_startStopButton_clicked();
-
-    void on_resetButton_clicked();
-
-    void DrawDigitalTime(long long time);
-
 private:
     Ui::MainWindow *ui;
     AnalogClockWindow *view;

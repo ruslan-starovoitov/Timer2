@@ -1,40 +1,19 @@
 #include "analogclockwindow.h"
 #include <ctime>
 #include <QWidget>
+#include <math.h>
 
 const int fps = 100.0;
 
 AnalogClockWindow::AnalogClockWindow()
 {
-    watchDialsCount=3;
-    int _arrsCount = 1360;
-    WatchArrow *arrows = new WatchArrow[_arrsCount];
-    for(int i = 0; i < _arrsCount; i++){
-        arrows[i] = WatchArrow(i, new QColor(i * 10 % 255,255,i * i % 256), 3, new QPoint[3]{QPoint(-1, 0),QPoint(1, 0),QPoint(0,-30)});
-    }
-
-    watchDials = new WatchDial[watchDialsCount]{
-                WatchDial(),
-                WatchDial(50, 30, 2,
-                          new WatchArrow[2]{
-                                        WatchArrow(1, new QColor(0,0,0), 3, new QPoint[3]{QPoint(-1,0),QPoint(1,0),QPoint(0,-20)}),
-                                        WatchArrow(60, new QColor(0,255,0), 3, new QPoint[3]{QPoint(-3,-30),QPoint(3,-30),QPoint(0,-20)})
-                          },
-                1, new Notches[1]{
-                    Notches (12, new QColor(0,0,0), 20,0,25,0)
-                } ),
-                WatchDial(50, 70, _arrsCount,
-                          arrows,
-                1, new Notches[1]{
-                    Notches (60, new QColor(90,110,50), 20,0,25,0)
-                } )
-    };
-
-    setTitle("Analog Clock");
+    setTitle("Radar");
     resize(200, 200);
 
-    timerState = Paused;
-    reset();
+    reader = ReaderIterator();
+    startTime = std::chrono::high_resolution_clock::now();
+
+    m_timerId = myStartTimer();
 }
 
 
@@ -49,65 +28,68 @@ void AnalogClockWindow::timerEvent(QTimerEvent *event)
     }
 }
 
-void AnalogClockWindow::startStop()
+double AnalogClockWindow::getCurrentAngle(long long time)
 {
-    switch (timerState) {
-        case Reseted:
-            timerState = Started;
-            m_timerId = myStartTimer();
-            begin = std::chrono::high_resolution_clock::now();
-            pauseTime = begin;
-            break;
-        case Started:
-            timerState = Paused;
-            killTimer(m_timerId);
-            pauseTime = std::chrono::high_resolution_clock::now();
-            break;
-        case Paused:
-            timerState = Started;
-            m_timerId = myStartTimer();
-            auto now = std::chrono::high_resolution_clock::now();
-            begin += now-pauseTime;
-            renderLater();
-            break;
-    }
+    int period =10;
+    return ((time %(period*1000)) / period) * M_PI * 2/1000;
 }
-
-void AnalogClockWindow::reset()
-{
-    if(timerState == Paused){
-        timerState = Reseted;
-        begin = std::chrono::high_resolution_clock::now();
-        pauseTime = begin;
-        renderLater();
-    }
-}
-
 
 void AnalogClockWindow::render(QPainter *p)
 {
+    p->translate(width() / 2, height() / 2);
+
+    int side = qMin(width(), height());
+    p->scale(side / 200.0, side / 200.0);
+
     //Сглаживание
     p->setRenderHint(QPainter::Antialiasing);
 
+    p->setPen(Qt::NoPen);
+    p->setBrush(Qt::black);
+    p->drawRect(-100, -100, 200, 200);
+
     //Вычисление времени
     auto now = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-begin).count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-startTime).count();
 
-    switch (timerState) {
-        case Reseted:
-            duration = 0;
-            break;
-        case Paused:
-            duration = std::chrono::duration_cast<std::chrono::nanoseconds>(pauseTime-begin).count();
-            break;
+
+    double sec = duration/1000000000.0;
+    //от 0 до 1
+    double percents = sec/10;
+    double angle = 360*percents;
+    p->save();
+    p->rotate(-90);
+    p->rotate(angle);
+
+    QConicalGradient conicalGrad(0, 0, 0);
+    conicalGrad.setColorAt(0, Qt::green);
+    conicalGrad.setColorAt(0.125, Qt::transparent);
+    p->setBrush(QBrush(conicalGrad));
+    p->drawPie(-100, -100, 200, 200, 0, 1000);
+    p->restore();
+
+
+
+    auto planeInfo = reader.GetCurrent();
+
+    auto deltaT = planeInfo->timeMs - duration / 1000000;
+    if(abs(deltaT) < 10)
+    {
+        int transparency = 0;
+        if(deltaT > 0) transparency = deltaT * 255 / 1000;
+        auto color = QColor(0, 255, 0, transparency);
+        p->setPen(QPen(color, 3));
+        qreal x = planeInfo->radius / 150000 * sin(angle / 180 * M_PI) * 100;
+        qreal y = planeInfo->radius / 150000 * cos(angle / 180 * M_PI) * 100;
+        p->drawPoint(QPointF(x, y));
+        reader.MoveNext();
     }
 
-    //
-    emit timeChanged(duration);
-    //Отрисовка циферблатов
-    for(int i = 0; i < watchDialsCount; i++){
-        watchDials[i].draw(p, duration, width(), height());
-    }
     p->end();
+}
+
+void AnalogClockWindow::mousePressEvent(QMouseEvent *ev)
+{
+    qInfo() << ev->x() << " " << ev->y();
 }
 
