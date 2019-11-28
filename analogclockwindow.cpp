@@ -88,10 +88,13 @@ void AnalogClockWindow::render(QPainter *p)
 
     for(DotInfo &dot : dots)
     {
-        int transparency = (255 * dot.timeToFade) / dot.fadingTime;
-        auto color = QColor(0, 255, 0, transparency);
-        p->setPen(QPen(color, 1));
-        p->drawPoint(QPointF(dot.x, dot.y));
+        if(abs(dot.x) * scale <= 100 && abs(dot.y) * scale <= 100)
+        {
+            int transparency = (255 * dot.timeToFade) / dot.fadingTime;
+            auto color = QColor(0, 255, 0, transparency);
+            p->setPen(QPen(color, 1));
+            p->drawPoint(QPointF(dot.x, dot.y));
+        }
         dot.timeToFade -= renderDelta;
         if(dot.timeToFade <= 0)
         {
