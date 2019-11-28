@@ -32,6 +32,7 @@ private:
     ReaderIterator reader;
     std::list<DotInfo> dots;
     double scale;
+    const int period;
     const int maxRadius;
     const double deltaScale;
 

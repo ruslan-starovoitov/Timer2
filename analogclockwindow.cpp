@@ -5,7 +5,7 @@
 
 const int fps = 100.0;
 
-AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepath), maxRadius(150000), deltaScale(0.01)
+AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepath), period(10), maxRadius(150000), deltaScale(0.01)
 {
     setTitle("Radar");
     resize(500, 500);
@@ -63,7 +63,7 @@ void AnalogClockWindow::render(QPainter *p)
 
     double sec = duration/1000000000.0;
     //от 0 до 1
-    double percents = sec/10;
+    double percents = sec/period;
     double angle = 360*percents;
     p->save();
     p->rotate(-90);
@@ -102,28 +102,48 @@ void AnalogClockWindow::render(QPainter *p)
         }
     }
 
-    auto planeInfo = reader.GetCurrent();
-
-    if(planeInfo != nullptr)
+    if(reader.HasValue())
     {
-        auto deltaT = planeInfo->timeMs - duration / 1000000;
-        const int maxDelta = 20;
-        if(abs(deltaT) < maxDelta)
+        PlaneInfo* planeInfo = reader.GetCurrent();
+
+        long long deltaT = planeInfo->timeMs - duration / 1000000;
+
+        while(planeInfo != nullptr && deltaT <= 0)
         {
-            qreal x = planeInfo->radius / maxRadius * sin((angle) / 180 * M_PI) * 100;
-            qreal y = planeInfo->radius / maxRadius * cos((angle) / 180 * M_PI) * 100;
-            qInfo()<< "X: " << x << " Y: " << y;
-            reader.MoveNext();
+            if(deltaT > -500)
+            {
+                double planeAngle = 2 * M_PI * planeInfo->timeMs / 1000 / period;
+                qInfo()<< planeAngle;
+                qreal x = planeInfo->radius / maxRadius * sin(planeAngle) * 100;
+                qreal y = planeInfo->radius / maxRadius * cos(planeAngle) * 100;
+                qInfo()<< "X: " << x << " Y: " << y;
+                reader.MoveNext();
 
-            DotInfo info;
-            info.x = x;
-            info.y = -y;
-            info.height = planeInfo->height;
-            info.velocity = planeInfo->velocity;
-            info.index = planeInfo->index;
+                DotInfo info;
+                info.x = x;
+                info.y = -y;
+                info.height = planeInfo->height;
+                info.velocity = planeInfo->velocity;
+                info.index = planeInfo->index;
+                info.timeToFade += deltaT;
 
-            dots.push_back(info);
+                dots.push_back(info);
+            }
+            else
+            {
+                qInfo() << "Был пропущен самолёт.";
+                reader.MoveNext();
+            }
+
+            if(!reader.HasValue()) break;
+
+            planeInfo = reader.GetCurrent();
+            deltaT = planeInfo->timeMs - duration / 1000000;
         }
+    }
+    else
+    {
+        qInfo() << "Отсутствует текущее значение. Возможно, закончился файл.";
     }
 
     p->end();
