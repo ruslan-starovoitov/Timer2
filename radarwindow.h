@@ -4,7 +4,6 @@
 #include "rasterwindow.h"
 #include "readeriterator.h"
 #include <ctime>
-
 #include <QtGui>
 
 
@@ -31,6 +30,7 @@ private:
     int myStartTimer();
     ReaderIterator reader;
     std::list<DotInfo> dots;
+    QSet<int> neededTables;
     double scale;
     const int period;
     const int maxRadius;

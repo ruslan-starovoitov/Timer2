@@ -86,6 +86,8 @@ void RadarWindow::render(QPainter *p)
 
     p->scale(scale, scale);
 
+    QMap<int, DotInfo> lastDots;
+
     for(DotInfo &dot : dots)
     {
         if(abs(dot.x) * scale <= 100 && abs(dot.y) * scale <= 100)
@@ -94,6 +96,7 @@ void RadarWindow::render(QPainter *p)
             auto color = QColor(0, 255, 0, transparency);
             p->setPen(QPen(color, 1));
             p->drawPoint(QPointF(dot.x, dot.y));
+            lastDots[dot.index] = dot;
         }
         dot.timeToFade -= renderDelta;
         if(dot.timeToFade <= 0)
@@ -101,6 +104,22 @@ void RadarWindow::render(QPainter *p)
             dots.pop_front();
         }
     }
+
+    p->save();
+    font.setPointSize(2);
+    p->setFont(font);
+    QMapIterator<int, DotInfo> i(lastDots);
+    while (i.hasNext())
+    {
+        i.next();
+        auto currentDot = i.value();
+        p->drawText(QPointF(currentDot.x, currentDot.y), " id:" + QString::number(currentDot.index).rightJustified(3, '0'));
+        if(neededTables.contains(currentDot.index)){
+            p->drawText(QPointF(currentDot.x, currentDot.y + 3), " v:" + QString::number(currentDot.velocity));
+            p->drawText(QPointF(currentDot.x, currentDot.y + 6), " h:" + QString::number(currentDot.height));
+        }
+    }
+    p->restore();
 
     if(reader.HasValue())
     {
@@ -151,7 +170,44 @@ void RadarWindow::render(QPainter *p)
 
 void RadarWindow::mousePressEvent(QMouseEvent *ev)
 {
-    qInfo() << ev->x() << " " << ev->y();
+    double x = ev->x();
+    double y = ev->y();
+    double delta = width() - height();
+    double halfScreen = 0;
+
+    if(delta > 0){
+        x -= delta / 2;
+        halfScreen = height() / 2;
+    }
+    else
+    {
+        y += delta / 2;
+        halfScreen = width() / 2;
+    }
+
+    x -= halfScreen;
+    y -= halfScreen;
+
+    x = 100 * x / halfScreen;
+    y = 100 * y / halfScreen;
+
+    //qInfo() << x << " " << y;
+
+    for(DotInfo &dot : dots)
+    {
+        if(abs(dot.x - x) <= 1 && abs(dot.y - y) <= 1){
+            //qInfo() << "Current dot index: " << dot.index;
+            if(neededTables.contains(dot.index)){
+                neededTables.remove(dot.index);
+            }
+            else
+            {
+                neededTables.insert(dot.index);
+            }
+            //foreach (auto &value, neededTables) qInfo() << value;
+            break;
+        }
+    }
 }
 
 void RadarWindow::wheelEvent(QWheelEvent *ev)
