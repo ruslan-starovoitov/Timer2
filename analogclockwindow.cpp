@@ -11,6 +11,7 @@ AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepa
     resize(500, 500);
 
     startTime = std::chrono::high_resolution_clock::now();
+    prevFrameTime = startTime;
 
     m_timerId = myStartTimer();
 }
@@ -57,7 +58,8 @@ void AnalogClockWindow::render(QPainter *p)
     //Вычисление времени
     auto now = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(now-startTime).count();
-
+    long long renderDelta = std::chrono::duration_cast<std::chrono::milliseconds>(now-prevFrameTime).count();
+    prevFrameTime = now;
 
     double sec = duration/1000000000.0;
     //от 0 до 1
@@ -76,6 +78,18 @@ void AnalogClockWindow::render(QPainter *p)
     p->restore();
 
 
+    for(DotInfo &dot : dots)
+    {
+        int transparency = (255 * dot.timeToFade) / dot.fadingTime;
+        auto color = QColor(0, 255, 0, transparency);
+        p->setPen(QPen(color, 3));
+        p->drawPoint(QPointF(dot.x, dot.y));
+        dot.timeToFade -= renderDelta;
+        if(dot.timeToFade <= 0)
+        {
+            dots.pop_front();
+        }
+    }
 
     auto planeInfo = reader.GetCurrent();
 
@@ -99,6 +113,15 @@ void AnalogClockWindow::render(QPainter *p)
             qInfo() << "Before MoveNext";
             reader.MoveNext();
             qInfo() << "After MoveNext";
+
+            DotInfo info;
+            info.x = x;
+            info.y = y;
+            info.height = planeInfo->height;
+            info.velocity = planeInfo->velocity;
+            info.index = planeInfo->index;
+
+            dots.push_back(info);
         }
     }
 

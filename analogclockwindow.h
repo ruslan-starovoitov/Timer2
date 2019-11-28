@@ -1,5 +1,6 @@
 #ifndef ANALOGCLOCKWINDOW_H
 #define ANALOGCLOCKWINDOW_H
+#include "dotinfo.h"
 #include "rasterwindow.h"
 #include "readeriterator.h"
 #include <ctime>
@@ -24,9 +25,11 @@ protected:
 private:
     int m_timerId;
     std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+    std::chrono::time_point<std::chrono::high_resolution_clock> prevFrameTime;
     //Пересоздаёт таймер
     int myStartTimer();
     ReaderIterator reader;
+    std::list<DotInfo> dots;
 
 };
 

@@ -1,4 +1,5 @@
 SOURCES += \
+    dotinfo.cpp \
     main.cpp \
     planeinfo.cpp \
     rasterwindow.cpp \
@@ -6,6 +7,7 @@ SOURCES += \
     readeriterator.cpp
 
 HEADERS += \
+    dotinfo.h \
     planeinfo.h \
     rasterwindow.h \
     analogclockwindow.h \
