@@ -47,8 +47,8 @@ void ReaderIterator::MoveNext()
             currentPlaneInfo = new PlaneInfo();
             currentPlaneInfo->timeMs = std::stoll(words[0]);
             currentPlaneInfo->radius = std::stod(words[1]);
-            currentPlaneInfo->height = std::stoi(words[2]);
-            currentPlaneInfo->velocity = std::stoi(words[3]);
+            currentPlaneInfo->height = std::stod(words[2]);
+            currentPlaneInfo->velocity = std::stod(words[3]);
             currentPlaneInfo->index = std::stoi(words[4]);
             std::cout << "Plane info: "
                       << currentPlaneInfo->timeMs << " "

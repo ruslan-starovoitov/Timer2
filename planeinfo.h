@@ -9,8 +9,8 @@ public:
     ~PlaneInfo();
     long long timeMs;
     double radius;
-    int height;
-    int velocity;
+    double height;
+    double velocity;
     int index;
 };
 

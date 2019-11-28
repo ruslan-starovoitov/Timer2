@@ -20,6 +20,7 @@ protected:
     //Отрисовка всей сцены
     void render(QPainter *p) override;
     void mousePressEvent(QMouseEvent *ev) override;
+    void wheelEvent(QWheelEvent *ev) override;
     double getCurrentAngle(long long time);
 
 private:
@@ -30,6 +31,9 @@ private:
     int myStartTimer();
     ReaderIterator reader;
     std::list<DotInfo> dots;
+    double scale;
+    const int maxRadius;
+    const double deltaScale;
 
 };
 

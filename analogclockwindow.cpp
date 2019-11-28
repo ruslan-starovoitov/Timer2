@@ -5,14 +5,14 @@
 
 const int fps = 100.0;
 
-AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepath)
+AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepath), maxRadius(150000), deltaScale(0.01)
 {
     setTitle("Radar");
     resize(500, 500);
 
     startTime = std::chrono::high_resolution_clock::now();
     prevFrameTime = startTime;
-
+    scale = 1.0;
     m_timerId = myStartTimer();
 }
 
@@ -77,12 +77,20 @@ void AnalogClockWindow::render(QPainter *p)
     p->drawPie(-100, -100, 200, 200, 0, 1000);
     p->restore();
 
+    p->setPen(QPen(Qt::green, 1));
+    QFont font = p->font();
+    font.setPointSize(3);
+    p->setFont(font);
+    p->drawText(0, 100, QString::number(maxRadius / scale));
+    p->drawText(0, 50, QString::number(maxRadius / scale / 2.0));
+
+    p->scale(scale, scale);
 
     for(DotInfo &dot : dots)
     {
         int transparency = (255 * dot.timeToFade) / dot.fadingTime;
         auto color = QColor(0, 255, 0, transparency);
-        p->setPen(QPen(color, 3));
+        p->setPen(QPen(color, 1));
         p->drawPoint(QPointF(dot.x, dot.y));
         dot.timeToFade -= renderDelta;
         if(dot.timeToFade <= 0)
@@ -96,27 +104,17 @@ void AnalogClockWindow::render(QPainter *p)
     if(planeInfo != nullptr)
     {
         auto deltaT = planeInfo->timeMs - duration / 1000000;
-        const int maxDelta = 10;
+        const int maxDelta = 20;
         if(abs(deltaT) < maxDelta)
         {
-            int transparency = 0;
-            if(deltaT > 0) transparency = deltaT * 255 / maxDelta;
-            qInfo() << transparency;
-            auto color = QColor(0, 255, 0, transparency);
-            qInfo() << color;
-            p->setPen(QPen(color, 3));
-            p->setBrush(color);
-            qreal x = planeInfo->radius / 150000 * sin((angle) / 180 * M_PI) * 100;
-            qreal y = planeInfo->radius / 150000 * cos((angle) / 180 * M_PI) * 100;
+            qreal x = planeInfo->radius / maxRadius * sin((angle) / 180 * M_PI) * 100;
+            qreal y = planeInfo->radius / maxRadius * cos((angle) / 180 * M_PI) * 100;
             qInfo()<< "X: " << x << " Y: " << y;
-            p->drawPoint(QPointF(x, y));
-            qInfo() << "Before MoveNext";
             reader.MoveNext();
-            qInfo() << "After MoveNext";
 
             DotInfo info;
             info.x = x;
-            info.y = y;
+            info.y = -y;
             info.height = planeInfo->height;
             info.velocity = planeInfo->velocity;
             info.index = planeInfo->index;
@@ -131,5 +129,13 @@ void AnalogClockWindow::render(QPainter *p)
 void AnalogClockWindow::mousePressEvent(QMouseEvent *ev)
 {
     qInfo() << ev->x() << " " << ev->y();
+}
+
+void AnalogClockWindow::wheelEvent(QWheelEvent *ev)
+{
+    scale += ev->delta() / 120.0 * deltaScale;
+    if(scale < deltaScale){
+        scale = deltaScale;
+    }
 }
 

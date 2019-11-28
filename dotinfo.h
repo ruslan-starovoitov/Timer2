@@ -5,12 +5,12 @@
 class DotInfo
 {
 public:
-    DotInfo(int fadingT = 600);
+    DotInfo(int fadingT = 60000);
     ~DotInfo();
     double x;
     double y;
-    int height;
-    int velocity;
+    double height;
+    double velocity;
     int index;
     int fadingTime;
     int timeToFade;
