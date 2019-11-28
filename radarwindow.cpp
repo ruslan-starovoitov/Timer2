@@ -188,8 +188,8 @@ void RadarWindow::mousePressEvent(QMouseEvent *ev)
     x -= halfScreen;
     y -= halfScreen;
 
-    x = 100 * x / halfScreen;
-    y = 100 * y / halfScreen;
+    x = 100 * x / halfScreen / scale;
+    y = 100 * y / halfScreen / scale;
 
     //qInfo() << x << " " << y;
 
