@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "analogclockwindow.h"
+#include "radarwindow.h"
 
 int main(int argc, char **argv)
 {
@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     else {
         filepath = "./data.txt";
     }
-    AnalogClockWindow w(filepath);
+    RadarWindow w(filepath);
     w.show();
     return app.exec();
 

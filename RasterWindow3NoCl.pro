@@ -2,16 +2,15 @@ SOURCES += \
     dotinfo.cpp \
     main.cpp \
     planeinfo.cpp \
+    radarwindow.cpp \
     rasterwindow.cpp \
-    analogclockwindow.cpp \
     readeriterator.cpp
 
 HEADERS += \
     dotinfo.h \
     planeinfo.h \
+    radarwindow.h \
     rasterwindow.h \
-    analogclockwindow.h \
-    analogclockwindow.h \
     readeriterator.h
 
 QT += widgets

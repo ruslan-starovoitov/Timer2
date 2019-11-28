@@ -30,7 +30,7 @@ void ReaderIterator::MoveNext()
         std::string line;
         if (getline(*infile, line))
         {
-            std::cout << line << std::endl;
+            //std::cout << line << std::endl;
             std::stringstream ss(line);
             std::string item;
             std::vector<std::string> words;
@@ -50,13 +50,13 @@ void ReaderIterator::MoveNext()
             currentPlaneInfo->height = std::stod(words[2]);
             currentPlaneInfo->velocity = std::stod(words[3]);
             currentPlaneInfo->index = std::stoi(words[4]);
-            std::cout << "Plane info: "
-                      << currentPlaneInfo->timeMs << " "
-                      << currentPlaneInfo->radius << " "
-                      << currentPlaneInfo->height << " "
-                      << currentPlaneInfo->velocity << " "
-                      << currentPlaneInfo->index
-                      << std::endl;
+//            std::cout << "Plane info: "
+//                      << currentPlaneInfo->timeMs << " "
+//                      << currentPlaneInfo->radius << " "
+//                      << currentPlaneInfo->height << " "
+//                      << currentPlaneInfo->velocity << " "
+//                      << currentPlaneInfo->index
+//                      << std::endl;
         }
         else {
             std::cout << "Can't get line." << std::endl;

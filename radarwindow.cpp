@@ -1,11 +1,11 @@
-#include "analogclockwindow.h"
+#include "radarwindow.h"
 #include <ctime>
 #include <QWidget>
 #include <math.h>
 
 const int fps = 100.0;
 
-AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepath), period(10), maxRadius(150000), deltaScale(0.01)
+RadarWindow::RadarWindow(const std::string filepath) : reader(filepath), period(10), maxRadius(150000), deltaScale(0.01)
 {
     setTitle("Radar");
     resize(500, 500);
@@ -17,10 +17,10 @@ AnalogClockWindow::AnalogClockWindow(const std::string filepath) : reader(filepa
 }
 
 
-int AnalogClockWindow::myStartTimer(){
+int RadarWindow::myStartTimer(){
     return startTimer(1000 / fps);
 }
-void AnalogClockWindow::timerEvent(QTimerEvent *event)
+void RadarWindow::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == m_timerId)
     {
@@ -28,13 +28,13 @@ void AnalogClockWindow::timerEvent(QTimerEvent *event)
     }
 }
 
-double AnalogClockWindow::getCurrentAngle(long long time)
+double RadarWindow::getCurrentAngle(long long time)
 {
     int period =10;
     return ((time %(period*1000)) / period) * M_PI * 2/1000;
 }
 
-void AnalogClockWindow::render(QPainter *p)
+void RadarWindow::render(QPainter *p)
 {
     p->translate(width() / 2, height() / 2);
 
@@ -113,10 +113,10 @@ void AnalogClockWindow::render(QPainter *p)
             if(deltaT > -500)
             {
                 double planeAngle = 2 * M_PI * planeInfo->timeMs / 1000 / period;
-                qInfo()<< planeAngle;
+                //qInfo()<< planeAngle;
                 qreal x = planeInfo->radius / maxRadius * sin(planeAngle) * 100;
                 qreal y = planeInfo->radius / maxRadius * cos(planeAngle) * 100;
-                qInfo()<< "X: " << x << " Y: " << y;
+                //qInfo()<< "X: " << x << " Y: " << y;
                 reader.MoveNext();
 
                 DotInfo info;
@@ -149,12 +149,12 @@ void AnalogClockWindow::render(QPainter *p)
     p->end();
 }
 
-void AnalogClockWindow::mousePressEvent(QMouseEvent *ev)
+void RadarWindow::mousePressEvent(QMouseEvent *ev)
 {
     qInfo() << ev->x() << " " << ev->y();
 }
 
-void AnalogClockWindow::wheelEvent(QWheelEvent *ev)
+void RadarWindow::wheelEvent(QWheelEvent *ev)
 {
     scale += ev->delta() / 120.0 * deltaScale;
     if(scale < deltaScale){

@@ -1,5 +1,5 @@
-#ifndef ANALOGCLOCKWINDOW_H
-#define ANALOGCLOCKWINDOW_H
+#ifndef RADARWINDOW_H
+#define RADARWINDOW_H
 #include "dotinfo.h"
 #include "rasterwindow.h"
 #include "readeriterator.h"
@@ -9,11 +9,11 @@
 
 
 ///Описывает единственное окно 
-class AnalogClockWindow : public RasterWindow
+class RadarWindow : public RasterWindow
 {
     Q_OBJECT
 public:
-    AnalogClockWindow(const std::string filepath = "data.txt");
+    RadarWindow(const std::string filepath = "data.txt");
 
 protected:
     void timerEvent(QTimerEvent *) override;
@@ -38,4 +38,4 @@ private:
 
 };
 
-#endif // ANALOGCLOCKWINDOW_H
+#endif // RADARWINDOW_H
