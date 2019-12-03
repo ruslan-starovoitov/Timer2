@@ -53,6 +53,10 @@ void RadarWindow::render(QPainter *p)
     p->setBrush(Qt::NoBrush);
     p->drawEllipse(-100, -100, 200, 200);
     p->drawEllipse(-50, -50, 100, 100);
+    for(int i = 0; i < 360; i+= 30){
+        p->drawLine(0, 0, 0, 100);
+        p->rotate(30);
+    }
     p->restore();
 
     //Вычисление времени
